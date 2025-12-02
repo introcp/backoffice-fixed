@@ -32,20 +32,7 @@
     function setOutput(msgHtml) {
         if (!output) return;
         // Clear previous content
-        output.innerHTML = '';
-        // Create a styled, centered container for status messages
-        const container = document.createElement('div');
-        container.className = 'download-status';
-        container.style.textAlign = 'center';
-        container.style.margin = '16px auto';
-        container.style.padding = '12px 16px';
-        container.style.background = '#f8f9fa';
-        container.style.border = '1px solid #dee2e6';
-        container.style.borderRadius = '8px';
-        container.style.maxWidth = '700px';
-        container.style.boxShadow = '0 2px 6px rgba(0,0,0,0.06)';
-        container.innerHTML = msgHtml;
-        output.appendChild(container);
+        output.innerHTML = msgHtml;
     }
 
     function toColLetter(n) { // 1-based -> A1 column letters

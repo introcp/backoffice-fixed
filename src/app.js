@@ -159,19 +159,6 @@
         // Create new workbook and sheet
         const outWb = XLSX.utils.book_new();
         const outWs = XLSX.utils.aoa_to_sheet(newAoa);
-<<<<<<< Updated upstream
-
-        // Style header row (row 1) as bold
-        for (let i = 0; i < newHeader.length; i++) {
-            const addr = `${toColLetter(i + 1)}1`;
-            if (outWs[addr]) {
-                outWs[addr].s = {
-                    font: { bold: true }
-                };
-            }
-        }
-
-=======
         
         // Make first row bold
         const range = XLSX.utils.decode_range(outWs['!ref']);
@@ -183,11 +170,10 @@
             };
         }
         
->>>>>>> Stashed changes
         XLSX.utils.book_append_sheet(outWb, outWs, 'Processed');
 
         const outName = (originalName?.replace(/\.xlsx$/i, '') || 'attendance') + '_processed.xlsx';
-        XLSX.writeFile(outWb, outName, { cellStyles: true });
+        XLSX.writeFile(outWb, outName);
 
         const removed = lectureIdxs.length - lectureCount;
         setOutput(`Done. Removed ${removed} lecture column(s). Downloaded: <strong>${outName}</strong>.`);

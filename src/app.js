@@ -31,7 +31,21 @@
 
     function setOutput(msgHtml) {
         if (!output) return;
-        output.innerHTML = msgHtml;
+        // Clear previous content
+        output.innerHTML = '';
+        // Create a styled, centered container for status messages
+        const container = document.createElement('div');
+        container.className = 'download-status';
+        container.style.textAlign = 'center';
+        container.style.margin = '16px auto';
+        container.style.padding = '12px 16px';
+        container.style.background = '#f8f9fa';
+        container.style.border = '1px solid #dee2e6';
+        container.style.borderRadius = '8px';
+        container.style.maxWidth = '700px';
+        container.style.boxShadow = '0 2px 6px rgba(0,0,0,0.06)';
+        container.innerHTML = msgHtml;
+        output.appendChild(container);
     }
 
     function toColLetter(n) { // 1-based -> A1 column letters
@@ -145,10 +159,21 @@
         // Create new workbook and sheet
         const outWb = XLSX.utils.book_new();
         const outWs = XLSX.utils.aoa_to_sheet(newAoa);
+
+        // Style header row (row 1) as bold
+        for (let i = 0; i < newHeader.length; i++) {
+            const addr = `${toColLetter(i + 1)}1`;
+            if (outWs[addr]) {
+                outWs[addr].s = {
+                    font: { bold: true }
+                };
+            }
+        }
+
         XLSX.utils.book_append_sheet(outWb, outWs, 'Processed');
 
         const outName = (originalName?.replace(/\.xlsx$/i, '') || 'attendance') + '_processed.xlsx';
-        XLSX.writeFile(outWb, outName);
+        XLSX.writeFile(outWb, outName, { cellStyles: true });
 
         const removed = lectureIdxs.length - lectureCount;
         setOutput(`Done. Removed ${removed} lecture column(s). Downloaded: <strong>${outName}</strong>.`);

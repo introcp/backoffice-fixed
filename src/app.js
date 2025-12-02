@@ -159,6 +159,7 @@
         // Create new workbook and sheet
         const outWb = XLSX.utils.book_new();
         const outWs = XLSX.utils.aoa_to_sheet(newAoa);
+<<<<<<< Updated upstream
 
         // Style header row (row 1) as bold
         for (let i = 0; i < newHeader.length; i++) {
@@ -170,6 +171,19 @@
             }
         }
 
+=======
+        
+        // Make first row bold
+        const range = XLSX.utils.decode_range(outWs['!ref']);
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const address = XLSX.utils.encode_col(C) + "1"; // Row 1
+            if (!outWs[address]) continue;
+            outWs[address].s = {
+                font: { bold: true }
+            };
+        }
+        
+>>>>>>> Stashed changes
         XLSX.utils.book_append_sheet(outWb, outWs, 'Processed');
 
         const outName = (originalName?.replace(/\.xlsx$/i, '') || 'attendance') + '_processed.xlsx';

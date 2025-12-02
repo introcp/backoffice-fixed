@@ -129,11 +129,13 @@
                 row[newPresIdx] = 0;
             }
 
-            // Percentuale = Presenze / lectureCount
+            // Percentuale = Presenze / COUNTA(lecture columns)
             if (lectureCount > 0) {
+                const startColLetter = toColLetter(newLectureStart + 1); // 1-based
+                const endColLetter = toColLetter(newLectureEnd + 1);
                 const presCellRef = `${toColLetter(newPresIdx + 1)}${excelRow}`;
                 row[newPercIdx] = {
-                    f: `${presCellRef}/${lectureCount}`,
+                    f: `${presCellRef}/COUNTA($${startColLetter}$1:$${endColLetter}$1)`,
                     z: '0.00%'
                 };
             } else {

@@ -16,9 +16,24 @@ function processWorkbook(workbook) {
     const worksheet = workbook.Sheets[sheetName];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-    const headers = jsonData[0];
-    const presenzeIndex = headers.indexOf("Presenze");
+    const headers = jsonData[0] || [];
+    const presenzeIndex = headers.findIndex(h => String(h).trim().toLowerCase() === 'presenze');
     const processedData = [];
+
+    // Find the last row that contains "TOTALE" (case-insensitive) and mark it to skip
+    let lastTotaleIndex = -1;
+    for (let i = jsonData.length - 1; i >= 1; i--) { // skip header at index 0
+        const row = jsonData[i] || [];
+        const hasTotale = row.some(cell => {
+            if (cell == null) return false;
+            const text = String(cell).trim().toUpperCase();
+            return text.includes('TOTALE');
+        });
+        if (hasTotale) {
+            lastTotaleIndex = i;
+            break;
+        }
+    }
 
     jsonData.forEach((row, rowIndex) => {
         if (rowIndex === 0) {
@@ -26,7 +41,12 @@ function processWorkbook(workbook) {
             return;
         }
 
-        const isAllZeros = row.every((cell, index) => index !== presenzeIndex && cell === 0);
+        // Skip the last totals row
+        if (rowIndex === lastTotaleIndex) {
+            return;
+        }
+
+        const isAllZeros = row.every((cell, index) => index !== presenzeIndex && (cell === 0 || cell === null || cell === undefined || (typeof cell === 'string' && cell.trim() === '')));
         if (!isAllZeros) {
             const presenzeValue = row[presenzeIndex] || 0;
             const totalAttendance = row.reduce((sum, cell, index) => index !== presenzeIndex ? sum + (cell || 0) : sum, 0);

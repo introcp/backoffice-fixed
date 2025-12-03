@@ -105,7 +105,27 @@
         const newPresIdx = newLectureStart + lectureCount; // presenze after lectures
         const newPercIdx = newPresIdx + 1;
 
+        // Find last row with "TOTALE" (substring, case-insensitive) to discard it
+        let lastTotaleRowIdx = -1;
+        for (let r = aoa.length - 1; r >= 1; r--) {
+            const row = aoa[r] || [];
+            const hasTotale = row.some(cell => {
+                if (cell == null) return false;
+                const text = String(cell).trim().toUpperCase();
+                return text.includes('TOTALE');
+            });
+            if (hasTotale) {
+                lastTotaleRowIdx = r;
+                break;
+            }
+        }
+
         for (let r = 1; r < aoa.length; r++) {
+            // Skip the last totals row if present
+            if (r === lastTotaleRowIdx) {
+                console.debug('[processed] Skipping totals row at index', r);
+                continue;
+            }
             const srcRow = aoa[r] || [];
             const row = [];
 

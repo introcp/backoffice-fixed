@@ -24,13 +24,20 @@ github-pages-xlsx-attendance
 - Calculate and add a "Percentuale" column for attendance ratios
 - Download the processed file
 
-## Usage
+## Usage (locally)
 
 1. Clone the repository to your local machine.
-2. Serve the folder locally (recommended) and open in a browser.
-3. Use the form to upload your XLSX file (e.g., `Presenze_corso.xlsx`).
-4. The app will remove date columns that are entirely zero, preserve the "Presenze" formula to count 1's over remaining dates, and add a "Percentuale" column.
-5. A processed `.xlsx` file will be downloaded automatically.
+2. Serve the folder locally by issuing the following command
+    ```python3 -m  http.server 8000```
+3. Then open your browser at `http://localhost:8000`
+4. Use the form to upload your XLSX file (e.g., `Presenze_corso.xlsx`).
+5. The app will remove date columns that are entirely zero, preserve the "Presenze" formula to count 1's over remaining dates, and add a "Percentuale" column.
+6. A processed `.xlsx` file will be downloaded automatically.
+
+## Usage (online)
+1. Head over to [introcp.github.io/backoffice-fixed/](introcp.github.io/backoffice-fixed/)
+2. Upload your XLSX file using the provided form
+3. The app will process the file as described above and download the modified file.
 
 ## Dependencies
 
@@ -40,19 +47,19 @@ This project uses the following libraries:
 
 Make sure to include the necessary scripts in your `index.html` to utilize these libraries.
 
-## License
+<!-- ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. -->
 
-## How to
+<!-- ## How to run locally
 ```python
 python3 -m  http.server 8000
 ```
-Then open your browser at `http://localhost:8000`
+Then open your browser at `http://localhost:8000` -->
 
-## Deploying to GitHub Pages
+<!-- ## Deploying to GitHub Pages
 
 - Commit and push to the repository.
 - In GitHub, go to Settings → Pages.
 - Under "Build and deployment", select the `main` (or default) branch and `/ (root)` folder.
-- Save. After a few minutes, the site will be available at the provided Pages URL.
+- Save. After a few minutes, the site will be available at the provided Pages URL. -->
